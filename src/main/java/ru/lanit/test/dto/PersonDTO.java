@@ -44,8 +44,12 @@ public class PersonDTO {
 		Date date = null;
 		try {
 			date = format.parse(birthdate + " 12:00");
-		} catch (ParseException e) {
-			e.printStackTrace();
+		} catch (ParseException ignore1) {
+			format = new SimpleDateFormat("dd.MM.yyyy");
+			try {
+				date = format.parse(birthdate);
+			} catch (ParseException ignored2) {
+			}
 		}
 		return date;
 	}
