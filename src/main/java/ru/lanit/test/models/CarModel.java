@@ -68,9 +68,4 @@ public class CarModel {
 		this.owner = owner;
 	}
 
-	@Override
-	public String toString() {
-		return "CarModel [id=" + id + ", model=" + model + ", horsepower=" + horsepower + ", owner=" + owner + "]";
-	}
-
 }

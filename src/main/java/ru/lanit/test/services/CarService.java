@@ -23,14 +23,6 @@ public class CarService {
 		return carRepository.findById(id);
 	}
 
-	public long getCarCount() {
-		return carRepository.count();
-	}
-
-	public long getDistinctVendorsCount() {
-		return carRepository.countDistinctVendors();
-	}
-
 	@Transactional
 	public void save(CarModel carModel) {
 		carRepository.save(carModel);

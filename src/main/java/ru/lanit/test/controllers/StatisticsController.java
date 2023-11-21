@@ -1,30 +1,24 @@
 package ru.lanit.test.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ru.lanit.test.dto.StatisticsDTO;
-import ru.lanit.test.services.CarService;
-import ru.lanit.test.services.PersonService;
+import ru.lanit.test.services.StatisticsService;
 
 @RestController
 public class StatisticsController {
 
-	private final PersonService personService;
-	private final CarService carService;
+	private final StatisticsService statisticsService;
 
-	public StatisticsController(PersonService personService, CarService carService) {
-		this.personService = personService;
-		this.carService = carService;
+	@Autowired
+	public StatisticsController(StatisticsService statisticsService) {
+		this.statisticsService = statisticsService;
 	}
 
 	@GetMapping("/statistics")
 	public StatisticsDTO getStatistics() {
-		long personcount = personService.getPersonCount();
-		long carcount = carService.getCarCount();
-		long uniquevendorcount = carService.getDistinctVendorsCount();
-
-		StatisticsDTO statisticsDTO = new StatisticsDTO(personcount, carcount, uniquevendorcount);
-		return statisticsDTO;
+		return statisticsService.getStatisticsDTO();
 	}
 }

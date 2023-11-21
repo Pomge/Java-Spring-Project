@@ -23,10 +23,6 @@ public class PersonService {
 		return personRepository.findById(id);
 	}
 
-	public long getPersonCount() {
-		return personRepository.count();
-	}
-
 	@Transactional
 	public void save(PersonModel personModel) {
 		personRepository.save(personModel);
