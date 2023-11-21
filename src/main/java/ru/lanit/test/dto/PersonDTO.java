@@ -1,13 +1,11 @@
 package ru.lanit.test.dto;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
@@ -24,9 +22,6 @@ public class PersonDTO {
 	@DateTimeFormat(pattern = "dd.MM.yyyy")
 	@JsonFormat(pattern = "dd.MM.yyyy")
 	private LocalDate birthdate;
-
-	@OneToMany(mappedBy = "owner")
-	private List<CarDTO> cars;
 
 	public Long getId() {
 		return id;
@@ -52,12 +47,9 @@ public class PersonDTO {
 		this.birthdate = birthdate;
 	}
 
-	public void setCars(List<CarDTO> cars) {
-		this.cars = cars;
-	}
-
-	public List<CarDTO> getCars() {
-		return cars;
+	@Override
+	public String toString() {
+		return "PersonDTO [id=" + id + ", name=" + name + ", birthdate=" + birthdate + "]";
 	}
 
 }

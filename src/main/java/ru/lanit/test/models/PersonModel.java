@@ -10,25 +10,18 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
-import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "Person")
 public class PersonModel {
 	@Id
 	@Column(name = "id")
-	@NotNull(message = "Must not be null")
 	private Long id;
 
 	@Column(name = "name")
-	@NotNull(message = "Must not be null")
 	private String name;
 
 	@Column(name = "birthdate")
-	@NotNull(message = "Must not be null")
-	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "dd.MM.yyyy")
 	private LocalDate birthdate;
 
@@ -69,6 +62,11 @@ public class PersonModel {
 
 	public void setCars(List<CarModel> cars) {
 		this.cars = cars;
+	}
+
+	@Override
+	public String toString() {
+		return "PersonModel [id=" + id + ", name=" + name + ", birthdate=" + birthdate + ", cars=" + cars + "]";
 	}
 
 }

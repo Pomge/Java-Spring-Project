@@ -1,7 +1,6 @@
 package ru.lanit.test.dto;
 
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
@@ -10,7 +9,6 @@ public class CarDTO {
 	private Long id;
 
 	@NotNull(message = "Must not be null")
-	@NotEmpty(message = "Must not be empty")
 	@Pattern(regexp = "^[a-zA-Z0-9]+-[a-zA-Z0-9]+$", message = "Must be like \'VENDOR-MODELNAME\'")
 	private String model;
 

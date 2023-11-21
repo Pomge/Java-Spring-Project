@@ -7,9 +7,9 @@ public class NotCreatedErrorResponse {
 	private String message;
 	private Map<String, List<String>> errors;
 
-	public NotCreatedErrorResponse(String message, Map<String, List<String>> errors) {
-		this.message = message;
-		this.errors = errors;
+	public NotCreatedErrorResponse(NotCreatedException notCreatedException) {
+		this.message = notCreatedException.getMessage();
+		this.errors = notCreatedException.getExceptions();
 	}
 
 	public String getMessage() {

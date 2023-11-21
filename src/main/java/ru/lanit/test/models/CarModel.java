@@ -6,26 +6,18 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "Car")
 public class CarModel {
 	@Id
 	@Column(name = "id")
-	@NotNull(message = "Must not be null")
 	private Long id;
 
 	@Column(name = "model")
-	@NotNull(message = "Must not be null")
-	@Pattern(regexp = "^[a-zA-Z0-9]+-[a-zA-Z0-9]+$", message = "Must be like \'VENDOR-MODELNAME\'")
 	private String model;
 
 	@Column(name = "horsepower")
-	@NotNull(message = "Must not be null")
-	@Min(value = 0, message = "Must be greater than 0")
 	private Integer horsepower;
 
 	@ManyToOne

@@ -23,6 +23,6 @@ public class UtilityController {
 	public ResponseEntity<HttpStatus> clear() {
 		carService.truncateTable();
 		personService.truncateTable();
-		return ResponseEntity.ok(HttpStatus.OK);
+		return ResponseEntity.ok(null);
 	}
 }
