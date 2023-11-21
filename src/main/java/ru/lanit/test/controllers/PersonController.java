@@ -61,7 +61,7 @@ public class PersonController {
 			PersonDTO personDTO = convertToPersonDTO(personModel);
 			return personDTO;
 		} else {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "\'personid=\'" + personid + " not found");
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "\'personid=" + personid + "' not found");
 		}
 	}
 

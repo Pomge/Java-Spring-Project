@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.server.ResponseStatusException;
 
 import ru.lanit.test.util.NotCreatedErrorResponse;
 import ru.lanit.test.util.NotCreatedException;
@@ -27,5 +28,10 @@ public class MyExceptionHandler {
 		exception.put("message", "Malformed JSON Request");
 		exception.put("debugMessage", ex.getMessage());
 		return new ResponseEntity<Object>(exception, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler
+	public ResponseStatusException handleException(ResponseStatusException responseStatusException) {
+		return responseStatusException;
 	}
 }
