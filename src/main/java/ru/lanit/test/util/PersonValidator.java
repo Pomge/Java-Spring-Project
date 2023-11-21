@@ -1,7 +1,6 @@
 package ru.lanit.test.util;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,13 +40,11 @@ public class PersonValidator implements Validator {
 			}
 		}
 
-		Date birthdateDate = personModel.getBirthdate();
-		Date today = new Date();
+		LocalDate birthdateDate = personModel.getBirthdate();
+		LocalDate today = LocalDate.now();
 
-		if (birthdateDate.after(today)) {
-			SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-			String formatedToday = dateFormat.format(today);
-			errors.rejectValue("birthdate", "", "Must be before current date (" + formatedToday + ")");
+		if (birthdateDate.isAfter(today)) {
+			errors.rejectValue("birthdate", "", "Must be before current date '" + today + "'");
 		}
 	}
 }

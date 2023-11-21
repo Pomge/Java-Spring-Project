@@ -1,8 +1,7 @@
 package ru.lanit.test.util;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,28 +52,14 @@ public class CarValidator implements Validator {
 			errors.rejectValue("ownerId", "", "This \'ownerId\' does not exist");
 		} else {
 			PersonModel owner = optionalPerson.get();
-			Calendar birthdate = getCalendar(owner.getBirthdate());
-			Calendar today = getCalendar(new Date());
+			LocalDate birthdate = owner.getBirthdate();
+			LocalDate today = LocalDate.now();
 
-			int yearsDifference = today.get(Calendar.YEAR) - birthdate.get(Calendar.YEAR);
-			if (birthdate.get(Calendar.MONTH) > today.get(Calendar.MONTH)
-					|| (birthdate.get(Calendar.MONTH) == today.get(Calendar.MONTH)
-							&& birthdate.get(Calendar.DATE) > today.get(Calendar.DATE))) {
-				yearsDifference -= 1;
-			}
-
+			long yearsDifference = Period.between(birthdate, today).getYears();
 			if (yearsDifference < 18) {
-				today.add(Calendar.YEAR, -18);
-				SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-				String formatedDate = dateFormat.format(today.getTime());
-				errors.rejectValue("ownerId", "", "Owner's birthdate should be before " + formatedDate);
+				today.minusYears(18);
+				errors.rejectValue("ownerId", "", "Owner's birthdate should be before '" + today + "'");
 			}
 		}
-	}
-
-	private static Calendar getCalendar(Date date) {
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(date);
-		return calendar;
 	}
 }

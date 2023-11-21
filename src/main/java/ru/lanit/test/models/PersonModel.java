@@ -1,6 +1,6 @@
 package ru.lanit.test.models;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -31,7 +31,7 @@ public class PersonModel {
 	@NotNull(message = "Must not be null")
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "dd.MM.yyyy")
-	private Date birthdate;
+	private LocalDate birthdate;
 
 	@OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
 	private List<CarModel> cars;
@@ -56,11 +56,11 @@ public class PersonModel {
 		this.name = name;
 	}
 
-	public Date getBirthdate() {
+	public LocalDate getBirthdate() {
 		return birthdate;
 	}
 
-	public void setBirthdate(Date birthdate) {
+	public void setBirthdate(LocalDate birthdate) {
 		this.birthdate = birthdate;
 	}
 

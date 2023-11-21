@@ -1,13 +1,16 @@
 package ru.lanit.test.dto;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 
 public class PersonDTO {
 	@NotNull(message = "Must not be null")
@@ -17,8 +20,10 @@ public class PersonDTO {
 	private String name;
 
 	@NotNull(message = "Must not be null")
-	@Pattern(regexp = "^[0-9]{1,2}.[0-9]{1,2}.[0-9]{4}$", message = "Must be in 'dd.MM.yyyy' format")
-	private String birthdate;
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "dd.MM.yyyy")
+	@JsonFormat(pattern = "dd.MM.yyyy")
+	private LocalDate birthdate;
 
 	@OneToMany(mappedBy = "owner")
 	private List<CarDTO> cars;
@@ -39,22 +44,11 @@ public class PersonDTO {
 		this.name = name;
 	}
 
-	public Date getBirthdate() {
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd kk:mm");
-		Date date = null;
-		try {
-			date = format.parse(birthdate + " 12:00");
-		} catch (ParseException ignore1) {
-			format = new SimpleDateFormat("dd.MM.yyyy");
-			try {
-				date = format.parse(birthdate);
-			} catch (ParseException ignored2) {
-			}
-		}
-		return date;
+	public LocalDate getBirthdate() {
+		return birthdate;
 	}
 
-	public void setBirthdate(String birthdate) {
+	public void setBirthdate(LocalDate birthdate) {
 		this.birthdate = birthdate;
 	}
 
