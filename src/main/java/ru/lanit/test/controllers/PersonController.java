@@ -38,13 +38,13 @@ public class PersonController {
 	@PostMapping("/person")
 	public ResponseEntity<HttpStatus> addPerson(@RequestBody @Valid PersonDTO personDTO, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
-			throw new NotCreatedException(bindingResult.getFieldErrors());
+			throw new NotCreatedException("Frontend validation errors", bindingResult.getFieldErrors());
 		} else {
 			PersonModel personModel = convertToPersonModel(personDTO);
 			personValidator.validate(personModel, bindingResult);
 
 			if (bindingResult.hasErrors()) {
-				throw new NotCreatedException(bindingResult.getFieldErrors());
+				throw new NotCreatedException("Backend validation errors", bindingResult.getFieldErrors());
 			} else {
 				personService.save(personModel);
 				return ResponseEntity.ok(HttpStatus.OK);

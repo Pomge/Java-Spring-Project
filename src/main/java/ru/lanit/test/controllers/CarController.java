@@ -34,12 +34,12 @@ public class CarController {
 	@PostMapping("/car")
 	public ResponseEntity<HttpStatus> addCar(@RequestBody @Valid CarDTO carDTO, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
-			throw new NotCreatedException(bindingResult.getFieldErrors());
+			throw new NotCreatedException("Frontend validation errors", bindingResult.getFieldErrors());
 		} else {
 			CarModel carModel = convertToCarModel(carDTO);
 			carValidator.validate(carModel, bindingResult);
 			if (bindingResult.hasErrors()) {
-				throw new NotCreatedException(bindingResult.getFieldErrors());
+				throw new NotCreatedException("Backend validation errors", bindingResult.getFieldErrors());
 			} else {
 				carService.save(carModel);
 				return ResponseEntity.ok(HttpStatus.OK);

@@ -13,7 +13,7 @@ import ru.lanit.test.models.CarModel;
 public interface CarRepository extends JpaRepository<CarModel, Long> {
 	Optional<CarModel> findById(long id);
 
-	@Query(value = "SELECT COUNT(DISTINCT UPPER(LEFT(Car.model, STRPOS(Car.model, '-') - 1))) FROM Car", nativeQuery = true)
+	@Query("SELECT COUNT(DISTINCT UPPER(LEFT(Car.model, STRPOS(Car.model, '-') - 1))) FROM CarModel AS Car")
 	long countDistinctVendors();
 
 	@Modifying

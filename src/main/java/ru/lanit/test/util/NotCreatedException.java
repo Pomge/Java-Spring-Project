@@ -11,7 +11,9 @@ public class NotCreatedException extends RuntimeException {
 
 	private Map<String, List<String>> exceptions;
 
-	public NotCreatedException(List<FieldError> errors) {
+	public NotCreatedException(String errorMessage, List<FieldError> errors) {
+		super(errorMessage);
+
 		exceptions = new HashMap<>();
 		for (FieldError error : errors) {
 			String field = error.getField();
