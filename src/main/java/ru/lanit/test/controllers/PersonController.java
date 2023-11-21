@@ -1,6 +1,8 @@
 package ru.lanit.test.controllers;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import jakarta.validation.Valid;
+import ru.lanit.test.dto.CarDTO;
 import ru.lanit.test.dto.PersonDTO;
+import ru.lanit.test.dto.PersonWithCarsDTO;
+import ru.lanit.test.models.CarModel;
 import ru.lanit.test.models.PersonModel;
 import ru.lanit.test.services.PersonService;
 import ru.lanit.test.util.NotCreatedException;
@@ -53,13 +58,21 @@ public class PersonController {
 	}
 
 	@GetMapping("/personwithcars")
-	public PersonDTO getPerson(@RequestParam(name = "personid") Long personid) {
+	public PersonWithCarsDTO getPerson(@RequestParam(name = "personid") Long personid) {
 		Optional<PersonModel> optional = personService.findById(personid);
 
 		if (optional.isPresent()) {
 			PersonModel personModel = optional.get();
 			PersonDTO personDTO = convertToPersonDTO(personModel);
-			return personDTO;
+
+			List<CarModel> carModelList = personModel.getCars();
+			List<CarDTO> cars = carModelList.stream().map(carModel -> convertToCarDTO(carModel))
+					.collect(Collectors.toList());
+
+			PersonWithCarsDTO personWithCarsDTO = new PersonWithCarsDTO(personDTO, cars);
+			System.out.println("AAA");
+
+			return personWithCarsDTO;
 		} else {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "\'personid=" + personid + "' not found");
 		}
@@ -71,5 +84,9 @@ public class PersonController {
 
 	private PersonDTO convertToPersonDTO(PersonModel personModel) {
 		return modelMapper.map(personModel, PersonDTO.class);
+	}
+
+	private CarDTO convertToCarDTO(CarModel carModel) {
+		return modelMapper.map(carModel, CarDTO.class);
 	}
 }

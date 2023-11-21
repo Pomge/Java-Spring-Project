@@ -1,42 +1,36 @@
-package ru.lanit.test.models;
+package ru.lanit.test.dto;
 
 import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
 
-@Entity
-@Table(name = "Person")
-public class PersonModel {
-	@Id
-	@Column(name = "id")
+public class PersonWithCarsDTO {
 	@NotNull(message = "Must not be null")
 	private Long id;
 
-	@Column(name = "name")
 	@NotNull(message = "Must not be null")
 	private String name;
 
-	@Column(name = "birthdate")
 	@NotNull(message = "Must not be null")
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "dd.MM.yyyy")
+	@JsonFormat(pattern = "dd.MM.yyyy")
 	private LocalDate birthdate;
 
-	@OneToMany(mappedBy = "owner")
-	private List<CarModel> cars;
+	private List<CarDTO> cars;
 
-	public PersonModel() {
-
+	public PersonWithCarsDTO(PersonDTO personDTO, List<CarDTO> cars) {
+		this.id = personDTO.getId();
+		this.name = personDTO.getName();
+		this.birthdate = personDTO.getBirthdate();
+		this.cars = cars;
 	}
 
 	public Long getId() {
@@ -63,11 +57,11 @@ public class PersonModel {
 		this.birthdate = birthdate;
 	}
 
-	public List<CarModel> getCars() {
+	public List<CarDTO> getCars() {
 		return cars;
 	}
 
-	public void setCars(List<CarModel> cars) {
+	public void setCars(List<CarDTO> cars) {
 		this.cars = cars;
 	}
 
