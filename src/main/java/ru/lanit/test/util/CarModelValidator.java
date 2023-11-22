@@ -2,6 +2,7 @@ package ru.lanit.test.util;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.format.DateTimeFormatter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -39,7 +40,9 @@ public class CarModelValidator implements Validator {
 		long yearsDifference = Period.between(birthdate, today).getYears();
 		if (yearsDifference < 18) {
 			today.minusYears(18);
-			errors.rejectValue("ownerId", "", "Owner's birthdate should be before " + today);
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+			String formattedString = today.format(formatter);
+			errors.rejectValue("ownerId", "", "Owner's birthdate should be before " + formattedString);
 		}
 	}
 
