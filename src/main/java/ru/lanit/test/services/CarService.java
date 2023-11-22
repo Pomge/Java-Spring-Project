@@ -42,7 +42,7 @@ public class CarService {
 			CarModel carModel = optional.get();
 			return carModel;
 		} else {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "\'carid=" + id + "' not found");
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "\'carId=" + id + "' not found");
 		}
 	}
 
