@@ -1,7 +1,6 @@
 package ru.lanit.test.services;
 
-import java.time.LocalDate;
-import java.time.Period;
+import java.util.HashMap;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
@@ -9,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.MapBindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -17,7 +17,7 @@ import ru.lanit.test.dto.CarDTO;
 import ru.lanit.test.models.CarModel;
 import ru.lanit.test.models.PersonModel;
 import ru.lanit.test.repositories.CarRepository;
-import ru.lanit.test.repositories.PersonRepository;
+import ru.lanit.test.util.CarModelValidator;
 import ru.lanit.test.util.NotCreatedException;
 
 @Service
@@ -25,14 +25,14 @@ import ru.lanit.test.util.NotCreatedException;
 @Transactional(readOnly = true)
 public class CarService {
 	private final ModelMapper modelMapper;
-	private final PersonRepository personRepository;
 	private final CarRepository carRepository;
+	private final CarModelValidator carModelValidator;
 
 	@Autowired
-	public CarService(ModelMapper modelMapper, PersonRepository personRepository, CarRepository carRepository) {
+	public CarService(ModelMapper modelMapper, CarRepository carRepository, CarModelValidator carModelValidator) {
 		this.modelMapper = modelMapper;
-		this.personRepository = personRepository;
 		this.carRepository = carRepository;
+		this.carModelValidator = carModelValidator;
 	}
 
 	public CarModel getCarModelById(long id) {
@@ -49,37 +49,17 @@ public class CarService {
 	@Transactional
 	public void save(@Valid CarDTO carDTO) {
 		CarModel carModel = convertToCarModel(carDTO);
-		long carId = carModel.getId();
 
-		NotCreatedException notCreatedException = new NotCreatedException("Backend Validation Errors");
-		Optional<CarModel> optionalCar = carRepository.findById(carId);
-		if (optionalCar.isPresent()) {
-			CarModel carModelFromDataBase = optionalCar.get();
-			long dataBase_id = carModelFromDataBase.getId();
+		MapBindingResult errors = new MapBindingResult(new HashMap<String, String>(), PersonModel.class.getName());
 
-			if (carId == dataBase_id) {
-				notCreatedException.addException("id", "This \'id\' is already exist");
-			}
+		long id = carModel.getId();
+		if (carRepository.existsById(id)) {
+			errors.rejectValue("id", "", "This \'id\' is already exist");
 		}
+		carModelValidator.validate(carModel, errors);
 
-		long ownerId = carModel.getOwner().getId();
-		Optional<PersonModel> optionalPerson = personRepository.findById(ownerId);
-		if (!optionalPerson.isPresent()) {
-			notCreatedException.addException("ownerId", "This \'ownerId\' does not exist");
-		} else {
-			PersonModel owner = optionalPerson.get();
-			LocalDate birthdate = owner.getBirthdate();
-			LocalDate today = LocalDate.now();
-
-			long yearsDifference = Period.between(birthdate, today).getYears();
-			if (yearsDifference < 18) {
-				today.minusYears(18);
-				notCreatedException.addException("ownerId", "Owner's birthdate should be before " + today);
-			}
-		}
-
-		if (!notCreatedException.getExceptions().isEmpty()) {
-			throw notCreatedException;
+		if (errors.hasErrors()) {
+			throw new NotCreatedException("Backend Validation Errors", errors);
 		}
 
 		carRepository.save(carModel);

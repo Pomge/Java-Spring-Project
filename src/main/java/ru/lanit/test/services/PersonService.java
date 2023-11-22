@@ -1,7 +1,6 @@
 package ru.lanit.test.services;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -11,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.MapBindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -22,6 +22,7 @@ import ru.lanit.test.models.CarModel;
 import ru.lanit.test.models.PersonModel;
 import ru.lanit.test.repositories.PersonRepository;
 import ru.lanit.test.util.NotCreatedException;
+import ru.lanit.test.util.PersonModelValidator;
 
 @Service
 @Validated
@@ -30,11 +31,14 @@ public class PersonService {
 
 	private final ModelMapper modelMapper;
 	private final PersonRepository personRepository;
+	private final PersonModelValidator personModelValidator;
 
 	@Autowired
-	public PersonService(ModelMapper modelMapper, PersonRepository personRepository) {
+	public PersonService(ModelMapper modelMapper, PersonRepository personRepository,
+			PersonModelValidator personModelValidator) {
 		this.modelMapper = modelMapper;
 		this.personRepository = personRepository;
+		this.personModelValidator = personModelValidator;
 	}
 
 	public PersonModel getPersonModelById(long id) {
@@ -44,7 +48,7 @@ public class PersonService {
 			PersonModel personModel = optional.get();
 			return personModel;
 		} else {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "\'personid=" + id + "' not found");
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "\'personId=" + id + "' not found");
 		}
 	}
 
@@ -69,30 +73,16 @@ public class PersonService {
 	public void save(@Valid PersonDTO personDTO) {
 		PersonModel personModel = convertToPersonModel(personDTO);
 
+		MapBindingResult errors = new MapBindingResult(new HashMap<String, String>(), PersonModel.class.getName());
+
 		long id = personModel.getId();
-
-		NotCreatedException notCreatedException = new NotCreatedException("Backend Validation Errors");
-		Optional<PersonModel> optional = personRepository.findById(id);
-		if (optional.isPresent()) {
-			PersonModel personModelFromDataBase = optional.get();
-			long dataBase_id = personModelFromDataBase.getId();
-
-			if (id == dataBase_id) {
-				notCreatedException.addException("id", "This \'id\' is already exist");
-			}
+		if (personRepository.existsById(id)) {
+			errors.rejectValue("id", "", "This \'id\' is already exist");
 		}
+		personModelValidator.validate(personModel, errors);
 
-		LocalDate birthdateDate = personModel.getBirthdate();
-		LocalDate today = LocalDate.now();
-
-		if (birthdateDate.isAfter(today)) {
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-			String formattedString = today.format(formatter);
-			notCreatedException.addException("birthdate", "Must be before current date " + formattedString);
-		}
-
-		if (!notCreatedException.getExceptions().isEmpty()) {
-			throw notCreatedException;
+		if (errors.hasErrors()) {
+			throw new NotCreatedException("Backend Validation Errors", errors);
 		}
 
 		personRepository.save(personModel);

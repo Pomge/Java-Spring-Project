@@ -41,6 +41,6 @@ public class MyExceptionHandler {
 
 	@ExceptionHandler
 	public ResponseEntity<Object> handleException(ResponseStatusException responseStatusException) {
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseStatusException.getBody());
+		return ResponseEntity.status(responseStatusException.getStatusCode()).body(responseStatusException.getBody());
 	}
 }

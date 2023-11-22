@@ -6,16 +6,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.validation.FieldError;
+import org.springframework.validation.MapBindingResult;
+
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 
 public class NotCreatedException extends RuntimeException {
-
+	private static final long serialVersionUID = 1L;
 	private Map<String, List<String>> exceptions;
 
-	public NotCreatedException(String message) {
+	public NotCreatedException(String message, MapBindingResult mapBindingResult) {
 		super(message);
 		this.exceptions = new HashMap<>();
+
+		for (FieldError fieldError : mapBindingResult.getFieldErrors()) {
+			String key = fieldError.getField();
+			String validationMessage = fieldError.getDefaultMessage();
+			this.addException(key, validationMessage);
+		}
 	}
 
 	public NotCreatedException(String message, String field, String exception) {
