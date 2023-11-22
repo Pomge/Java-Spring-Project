@@ -47,7 +47,7 @@ public class CarService {
 	}
 
 	@Transactional
-	public void save(@Valid CarDTO carDTO) {
+	public CarModel save(@Valid CarDTO carDTO) {
 		CarModel carModel = convertToCarModel(carDTO);
 
 		MapBindingResult errors = new MapBindingResult(new HashMap<String, String>(), PersonModel.class.getName());
@@ -63,6 +63,7 @@ public class CarService {
 		}
 
 		carRepository.save(carModel);
+		return carModel;
 	}
 
 	@Transactional

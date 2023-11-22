@@ -1,6 +1,5 @@
 package ru.lanit.test.controllers;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,7 +19,7 @@ public class UtilityController {
 	}
 
 	@GetMapping("/clear")
-	public ResponseEntity<HttpStatus> clear() {
+	public ResponseEntity<Object> clear() {
 		carService.truncateTable();
 		personService.truncateTable();
 		return ResponseEntity.ok(null);

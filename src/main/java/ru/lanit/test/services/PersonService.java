@@ -70,7 +70,7 @@ public class PersonService {
 	}
 
 	@Transactional
-	public void save(@Valid PersonDTO personDTO) {
+	public PersonModel save(@Valid PersonDTO personDTO) {
 		PersonModel personModel = convertToPersonModel(personDTO);
 
 		MapBindingResult errors = new MapBindingResult(new HashMap<String, String>(), PersonModel.class.getName());
@@ -86,6 +86,7 @@ public class PersonService {
 		}
 
 		personRepository.save(personModel);
+		return personModel;
 	}
 
 	@Transactional

@@ -1,7 +1,6 @@
 package ru.lanit.test.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +23,7 @@ public class PersonController {
 	}
 
 	@PostMapping("/person")
-	public ResponseEntity<HttpStatus> addPerson(@RequestBody PersonDTO personDTO) {
+	public ResponseEntity<Object> addPerson(@RequestBody PersonDTO personDTO) {
 		personService.save(personDTO);
 		return ResponseEntity.ok(null);
 	}
