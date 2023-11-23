@@ -7,14 +7,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table(name = "Car")
 @Getter
 @Setter
-@NoArgsConstructor
 public class CarModel {
 	@Id
 	@Column(name = "id")
