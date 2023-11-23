@@ -6,7 +6,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.server.ResponseStatusException;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import ru.lanit.test.dto.CarDTO;
 import ru.lanit.test.dto.PersonDTO;
 import ru.lanit.test.dto.PersonWithCarsDTO;
@@ -26,20 +26,13 @@ import ru.lanit.test.util.PersonModelValidator;
 
 @Service
 @Validated
+@RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class PersonService {
 
 	private final ModelMapper modelMapper;
 	private final PersonRepository personRepository;
 	private final PersonModelValidator personModelValidator;
-
-	@Autowired
-	public PersonService(ModelMapper modelMapper, PersonRepository personRepository,
-			PersonModelValidator personModelValidator) {
-		this.modelMapper = modelMapper;
-		this.personRepository = personRepository;
-		this.personModelValidator = personModelValidator;
-	}
 
 	public PersonModel getPersonModelById(long id) {
 		Optional<PersonModel> optional = personRepository.findById(id);

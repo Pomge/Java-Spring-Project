@@ -4,24 +4,20 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import lombok.RequiredArgsConstructor;
 import ru.lanit.test.models.CarModel;
 import ru.lanit.test.models.PersonModel;
 import ru.lanit.test.services.PersonService;
 
 @Component
+@RequiredArgsConstructor
 public class CarModelValidator implements Validator {
 
 	private final PersonService personService;
-
-	@Autowired
-	public CarModelValidator(PersonService personService) {
-		this.personService = personService;
-	}
 
 	@Override
 	public boolean supports(Class<?> clazz) {

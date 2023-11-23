@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.server.ResponseStatusException;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import ru.lanit.test.dto.CarDTO;
 import ru.lanit.test.models.CarModel;
 import ru.lanit.test.models.PersonModel;
@@ -22,18 +22,12 @@ import ru.lanit.test.util.NotCreatedException;
 
 @Service
 @Validated
+@RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class CarService {
 	private final ModelMapper modelMapper;
 	private final CarRepository carRepository;
 	private final CarModelValidator carModelValidator;
-
-	@Autowired
-	public CarService(ModelMapper modelMapper, CarRepository carRepository, CarModelValidator carModelValidator) {
-		this.modelMapper = modelMapper;
-		this.carRepository = carRepository;
-		this.carModelValidator = carModelValidator;
-	}
 
 	public CarModel getCarModelById(long id) {
 		Optional<CarModel> optional = carRepository.findById(id);
