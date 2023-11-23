@@ -52,12 +52,6 @@ public class PersonService {
 		}
 	}
 
-	public PersonDTO getPersonDTOById(long id) {
-		PersonModel personModel = getPersonModelById(id);
-		PersonDTO personDTO = convertToPersonDTO(personModel);
-		return personDTO;
-	}
-
 	public PersonWithCarsDTO getPersonWithCarsDTO(long id) {
 		PersonModel personModel = getPersonModelById(id);
 		PersonDTO personDTO = convertToPersonDTO(personModel);
