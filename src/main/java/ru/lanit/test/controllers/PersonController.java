@@ -19,14 +19,14 @@ public class PersonController {
 	private final PersonService personService;
 
 	@PostMapping("/person")
-	public ResponseEntity<Object> addPerson(@RequestBody PersonDTO personDTO) {
-		personService.save(personDTO);
+	public ResponseEntity<Object> addPersonDTO(@RequestBody PersonDTO personDTO) {
+		personService.savePersonDTO(personDTO);
 		return ResponseEntity.ok(null);
 	}
 
 	@GetMapping("/personwithcars")
-	public PersonWithCarsDTO getPerson(@RequestParam(name = "personid") Long personid) {
-		PersonWithCarsDTO personWithCarsDTO = personService.getPersonWithCarsDTO(personid);
+	public PersonWithCarsDTO getPersonWithCarsDTOById(@RequestParam(name = "personid") Long personid) {
+		PersonWithCarsDTO personWithCarsDTO = personService.getPersonWithCarsDTOById(personid);
 		return personWithCarsDTO;
 	}
 }

@@ -16,9 +16,9 @@ public class UtilityController {
 	private final CarService carService;
 
 	@GetMapping("/clear")
-	public ResponseEntity<Object> clear() {
-		carService.truncateTable();
-		personService.truncateTable();
+	public ResponseEntity<Object> trunceAllTables() {
+		carService.deleteAll();
+		personService.deleteAll();
 		return ResponseEntity.ok(null);
 	}
 }

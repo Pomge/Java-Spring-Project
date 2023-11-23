@@ -7,7 +7,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -53,12 +52,16 @@ class PersonControllerTest {
 
 	@Test
 	void addPersonTest404BadRequest() throws Exception {
-		PersonDTO personDTO = new PersonDTO();
-		personDTO.setId(null);
-		personDTO.setName(null);
-		personDTO.setBirthdate(null);
+		Long id = null;
+		String name = null;
+		LocalDate birthdate = null;
 
-		when(personService.save(any(PersonDTO.class))).thenThrow(new NotCreatedException("", "", ""));
+		PersonDTO personDTO = new PersonDTO();
+		personDTO.setId(id);
+		personDTO.setName(name);
+		personDTO.setBirthdate(birthdate);
+
+		when(personService.savePersonDTO(any(PersonDTO.class))).thenThrow(new NotCreatedException("", "", ""));
 
 		String body = objectMapper.writeValueAsString(personDTO);
 
@@ -69,12 +72,16 @@ class PersonControllerTest {
 
 	@Test
 	void addPersonTest200Ok() throws Exception {
-		PersonDTO personDTO = new PersonDTO();
-		personDTO.setId((long) 1);
-		personDTO.setName("TestName");
-		personDTO.setBirthdate(LocalDate.parse("22.11.2000", DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+		long id = 0;
+		String name = "Test";
+		LocalDate birthdate = LocalDate.now();
 
-		when(personService.save(any(PersonDTO.class))).thenReturn(convertToPersonModel(personDTO));
+		PersonDTO personDTO = new PersonDTO();
+		personDTO.setId(id);
+		personDTO.setName(name);
+		personDTO.setBirthdate(birthdate);
+
+		when(personService.savePersonDTO(any(PersonDTO.class))).thenReturn(convertToPersonModel(personDTO));
 
 		String body = objectMapper.writeValueAsString(personDTO);
 

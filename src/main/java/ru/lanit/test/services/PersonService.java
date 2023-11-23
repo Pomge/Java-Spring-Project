@@ -45,7 +45,7 @@ public class PersonService {
 		}
 	}
 
-	public PersonWithCarsDTO getPersonWithCarsDTO(long id) {
+	public PersonWithCarsDTO getPersonWithCarsDTOById(long id) {
 		PersonModel personModel = getPersonModelById(id);
 		PersonDTO personDTO = convertToPersonDTO(personModel);
 
@@ -57,7 +57,7 @@ public class PersonService {
 	}
 
 	@Transactional
-	public PersonModel save(@Valid PersonDTO personDTO) {
+	public PersonModel savePersonDTO(@Valid PersonDTO personDTO) {
 		PersonModel personModel = convertToPersonModel(personDTO);
 
 		MapBindingResult errors = new MapBindingResult(new HashMap<String, String>(), PersonModel.class.getName());
@@ -77,7 +77,7 @@ public class PersonService {
 	}
 
 	@Transactional
-	public void truncateTable() {
+	public void deleteAll() {
 		personRepository.deleteAll();
 	}
 

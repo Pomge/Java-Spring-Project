@@ -14,7 +14,7 @@ public class StatisticsController {
 	private final StatisticsService statisticsService;
 
 	@GetMapping("/statistics")
-	public StatisticsDTO getStatistics() {
+	public StatisticsDTO getStatisticsDTO() {
 		return statisticsService.getStatisticsDTO();
 	}
 }

@@ -41,7 +41,7 @@ public class CarService {
 	}
 
 	@Transactional
-	public CarModel save(@Valid CarDTO carDTO) {
+	public CarModel saveCarDTO(@Valid CarDTO carDTO) {
 		CarModel carModel = convertToCarModel(carDTO);
 
 		MapBindingResult errors = new MapBindingResult(new HashMap<String, String>(), PersonModel.class.getName());
@@ -61,7 +61,7 @@ public class CarService {
 	}
 
 	@Transactional
-	public void truncateTable() {
+	public void deleteAll() {
 		carRepository.deleteAll();
 	}
 
