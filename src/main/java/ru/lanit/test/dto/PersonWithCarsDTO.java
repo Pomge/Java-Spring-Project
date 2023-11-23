@@ -10,7 +10,13 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class PersonWithCarsDTO {
 	@NotNull(message = "Must not be null")
 	private Long id;
@@ -32,37 +38,4 @@ public class PersonWithCarsDTO {
 		this.birthdate = personDTO.getBirthdate();
 		this.cars = cars;
 	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public LocalDate getBirthdate() {
-		return birthdate;
-	}
-
-	public void setBirthdate(LocalDate birthdate) {
-		this.birthdate = birthdate;
-	}
-
-	public List<CarDTO> getCars() {
-		return cars;
-	}
-
-	public void setCars(List<CarDTO> cars) {
-		this.cars = cars;
-	}
-
 }

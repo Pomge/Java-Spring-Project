@@ -6,9 +6,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "Car")
+@Getter
+@Setter
+@NoArgsConstructor
 public class CarModel {
 	@Id
 	@Column(name = "id")
@@ -23,41 +29,4 @@ public class CarModel {
 	@ManyToOne
 	@JoinColumn(name = "ownerId", referencedColumnName = "id")
 	private PersonModel owner;
-
-	public CarModel() {
-
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getModel() {
-		return model;
-	}
-
-	public void setModel(String model) {
-		this.model = model;
-	}
-
-	public Integer getHorsepower() {
-		return horsepower;
-	}
-
-	public void setHorsepower(Integer horsepower) {
-		this.horsepower = horsepower;
-	}
-
-	public PersonModel getOwner() {
-		return owner;
-	}
-
-	public void setOwner(PersonModel owner) {
-		this.owner = owner;
-	}
-
 }
