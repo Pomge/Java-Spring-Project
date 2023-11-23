@@ -3,7 +3,7 @@ package ru.lanit.test.controllers;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+//import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.time.LocalDate;
@@ -64,7 +64,7 @@ class PersonControllerTest {
 
 		this.mockMvc.perform(
 				post("/person").contentType(MediaType.APPLICATION_JSON).characterEncoding("UTF-8").content(body))
-				.andDo(print()).andExpect(status().isBadRequest());
+				.andExpect(status().isBadRequest());
 	}
 
 	@Test
@@ -80,7 +80,7 @@ class PersonControllerTest {
 
 		this.mockMvc.perform(
 				post("/person").contentType(MediaType.APPLICATION_JSON).characterEncoding("UTF-8").content(body))
-				.andDo(print()).andExpect(status().isOk());
+				.andExpect(status().isOk());
 	}
 
 	private PersonModel convertToPersonModel(PersonDTO personDTO) {

@@ -21,17 +21,19 @@ class CarModelTest {
 
 	@Test
 	public void testGetterSetterAnnotation() {
+		long id = 0;
+		String model = "Test-Test";
+		int horsepower = 100;
 		PersonModel owner = new PersonModel();
-		carModel.setId((long) 0);
-		carModel.setModel("Test-Test");
-		carModel.setHorsepower(100);
+
+		carModel.setId(id);
+		carModel.setModel(model);
+		carModel.setHorsepower(horsepower);
 		carModel.setOwner(owner);
 
-		assertEquals(0, carModel.getId());
-		assertEquals("Test", carModel.getModel());
-		assertEquals(100, carModel.getHorsepower());
+		assertEquals(id, carModel.getId());
+		assertEquals(model, carModel.getModel());
+		assertEquals(horsepower, carModel.getHorsepower());
 		assertEquals(owner, carModel.getOwner());
-
-		owner = null;
 	}
 }

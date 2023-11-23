@@ -25,8 +25,9 @@ class PersonModelTest {
 
 	@Test
 	public void testGetterSetterAnnotation() {
-		LocalDate now = LocalDate.now();
-
+		long id = 0;
+		String name = "Test";
+		LocalDate birthdate = LocalDate.now();
 		List<CarModel> cars = new ArrayList<>();
 		CarModel carModel = new CarModel();
 		carModel.setId((long) 0);
@@ -35,14 +36,14 @@ class PersonModelTest {
 		carModel.setOwner(personModel);
 		cars.add(carModel);
 
-		personModel.setId((long) 0);
-		personModel.setName("Test");
-		personModel.setBirthdate(now);
+		personModel.setId(id);
+		personModel.setName(name);
+		personModel.setBirthdate(birthdate);
 		personModel.setCars(cars);
 
-		assertEquals(0, personModel.getId());
-		assertEquals("Test", personModel.getName());
-		assertEquals(now, personModel.getBirthdate());
+		assertEquals(id, personModel.getId());
+		assertEquals(name, personModel.getName());
+		assertEquals(birthdate, personModel.getBirthdate());
 		assertEquals(cars, personModel.getCars());
 	}
 }
